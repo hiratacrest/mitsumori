@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解体工事 無料見積もり</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@600&display=swap');
+
+  :root {
+    --black: #0d0d0d;
+    --orange: #f05a00;
+    --orange-light: #ff7a2e;
+    --cream: #faf7f2;
+    --gray: #888;
+    --border: #e0dbd3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--black);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.12;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(28px, 7vw, 44px);
+    color: #fff;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero-sub {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* Steps indicator */
+  .steps {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 24px 24px 0;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 14px; left: 50%;
+    width: 100%; height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .step:last-child::after { display: none; }
+  .step-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--gray);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 6px;
+    position: relative; z-index: 1;
+    transition: all 0.3s;
+  }
+  .step.active .step-dot {
+    background: var(--orange);
+    color: #fff;
+  }
+  .step.done .step-dot {
+    background: var(--black);
+    color: #fff;
+  }
+  .step-label {
+    font-size: 10px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .step.active .step-label { color: var(--orange); font-weight: 700; }
+  .step.done .step-label { color: var(--black); }
+
+  /* Form card */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    margin: 20px 16px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--black);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon {
+    width: 28px; height: 28px;
+    background: var(--orange);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* Form fields */
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .field label .req {
+    color: var(--orange);
+    margin-left: 4px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    background: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(240,90,0,0.1);
+    background: #fff;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { opacity: 1; }
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  /* Radio tiles */
+  .radio-tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .radio-tile {
+    position: relative;
+  }
+  .radio-tile input {
+    position: absolute; opacity: 0; width: 0; height: 0;
+  }
+  .radio-tile label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fafafa;
+    text-align: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    letter-spacing: 0;
+    margin: 0;
+  }
+  .radio-tile label .tile-icon { font-size: 22px; }
+  .radio-tile input:checked + label {
+    border-color: var(--orange);
+    background: rgba(240,90,0,0.06);
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* Range slider */
+  .range-wrap { position: relative; }
+  .range-val {
+    text-align: center;
+    font-size: 28px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    color: var(--orange);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .range-val span { font-size: 16px; font-family: 'Noto Sans JP', sans-serif; color: var(--gray); }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background-image: linear-gradient(var(--orange), var(--orange));
+    background-size: 50% 100%;
+    background-repeat: no-repeat;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--orange);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(240,90,0,0.4);
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 6px;
+  }
+
+  /* Estimate preview */
+  .estimate-preview {
+    background: var(--black);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 8px;
+  }
+  .estimate-preview .est-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .estimate-preview .est-range {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    color: var(--orange);
+    letter-spacing: 0.02em;
+  }
+  .estimate-preview .est-range small {
+    font-size: 14px;
+    color: #888;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .estimate-preview .est-note {
+    font-size: 11px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* Contact fields */
+  .contact-info {
+    background: #fffbf7;
+    border: 1.5px solid #f5e8dc;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  /* LINE button */
+  .btn-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: #06C755;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    margin-top: 8px;
+  }
+  .btn-line:hover {
+    background: #05b54c;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(6,199,85,0.35);
+  }
+  .btn-line:active { transform: translateY(0); }
+  .btn-line svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+  .privacy-note {
+    font-size: 11px;
+    color: var(--gray);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* Success screen */
+  .success {
+    display: none;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  .success .check {
+    width: 72px; height: 72px;
+    background: #06C755;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+  }
+  .success h2 {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .success p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.8;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--black);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: transform 0.3s;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card { animation: fadeUp 0.4s ease both; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">無料・最短即日返信</div>
+  <h1>解体工事<br><span>無料見積もり</span></h1>
+  <p class="hero-sub">入力3分 → LINEで概算金額をお届け<br>しつこい営業は一切ありません</p>
+
+  <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.12);padding-top:20px;">
+    <div style="font-family:'Oswald',sans-serif;font-size:22px;color:#fff;letter-spacing:0.08em;margin-bottom:12px;">
+      T-crest
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+      <a href="tel:0495718637"
+        style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 20px;color:#fff;text-decoration:none;font-size:16px;font-weight:700;letter-spacing:0.06em;width:100%;max-width:280px;justify-content:center;">
+        <span style="font-size:18px;">📞</span> 049-571-8637
+      </a>
+      <a href="tel:09074018484"
+        style="display:inline-flex;align-items:center;gap:8px;background:rgba(240,90,0,0.18);border:1px solid rgba(240,90,0,0.35);border-radius:8px;padding:10px 20px;color:#fff;text-decoration:none;font-size:16px;font-weight:700;letter-spacing:0.06em;width:100%;max-width:280px;justify-content:center;">
+        <span style="font-size:18px;">📱</span> 090-7401-8484
+      </a>
+    </div>
+    <p style="font-size:11px;color:#666;margin-top:10px;">タップで電話をかけられます</p>
+  </div>
+</div>
+
+<!-- Steps -->
+<div class="steps" id="stepsBar">
+  <div class="step active" id="step-ind-1">
+    <div class="step-dot">1</div>
+    <div class="step-label">建物情報</div>
+  </div>
+  <div class="step" id="step-ind-2">
+    <div class="step-dot">2</div>
+    <div class="step-label">面積・築年</div>
+  </div>
+  <div class="step" id="step-ind-3">
+    <div class="step-dot">3</div>
+    <div class="step-label">連絡先</div>
+  </div>
+</div>
+
+<!-- Step 1: 建物の種類 -->
+<div class="card" id="page1">
+  <div class="section-title">
+    <div class="icon">🏗️</div>
+    建物の種類を選んでください
+  </div>
+
+  <div class="field">
+    <div class="radio-tiles" id="buildingType">
+      <div class="radio-tile">
+        <input type="radio" name="type" id="t1" value="木造" checked>
+        <label for="t1"><span class="tile-icon">🪵</span>木造</label>
+      </div>
+      <div class="radio-tile">
+        <input type="radio" name="type" id="t2" value="鉄骨造">
+        <label for="t2"><span class="tile-icon">🔩</span>鉄骨造</label>
+      </div>
+      <div class="radio-tile">
+        <input type="radio" name="type" id="t3" value="RC（鉄筋コンクリート）">
+        <label for="t3"><span class="tile-icon">🧱</span>RC造</label>
+      </div>
+      <div class="radio-tile">
+        <input type="radio" name="type" id="t4" value="軽量鉄骨（プレハブ）">
+        <label for="t4"><span class="tile-icon">🏠</span>軽量鉄骨</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>階数<span class="req">*</span></label>
+    <select id="floors">
+      <option value="1">平屋（1階）</option>
+      <option value="2" selected>2階建て</option>
+      <option value="3">3階建て以上</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>都道府県・地域<span class="req">*</span></label>
+    <select id="region">
+      <option value="">選択してください</option>
+      <optgroup label="関東">
+        <option>東京都</option><option>神奈川県</option><option>埼玉県</option>
+        <option>千葉県</option><option>茨城県</option><option>栃木県</option><option>群馬県</option>
+      </optgroup>
+      <optgroup label="東海">
+        <option>愛知県</option><option>静岡県</option><option>岐阜県</option><option>三重県</option>
+      </optgroup>
+      <optgroup label="近畿">
+        <option>大阪府</option><option>兵庫県</option><option>京都府</option>
+        <option>奈良県</option><option>滋賀県</option><option>和歌山県</option>
+      </optgroup>
+      <optgroup label="その他">
+        <option>北海道</option><option>宮城県</option><option>福島県</option>
+        <option>新潟県</option><option>長野県</option><option>広島県</option>
+        <option>福岡県</option><option>その他</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <button class="btn-line" style="background:var(--black);" onclick="goTo(2)">
+    次へ →
+  </button>
+</div>
+
+<!-- Step 2: 面積・築年数 -->
+<div class="card hidden" id="page2">
+  <div class="section-title">
+    <div class="icon">📐</div>
+    建物の規模を教えてください
+  </div>
+
+  <div class="field">
+    <label>面積の入力方法を選んでください<span class="req">*</span></label>
+    <div style="display:flex;gap:0;margin-bottom:16px;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;">
+      <button id="btnTsubo" onclick="switchMode('tsubo')"
+        style="flex:1;padding:11px 8px;border:none;background:var(--black);color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;">
+        🏠 建坪（坪）
+      </button>
+      <button id="btnSqm" onclick="switchMode('sqm')"
+        style="flex:1;padding:11px 8px;border:none;background:#f5f5f5;color:#888;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;">
+        📐 延床面積（㎡）
+      </button>
+    </div>
+
+    <!-- 建坪モード -->
+    <div id="modeTsubo">
+      <div style="background:#f0f8ff;border:1px solid #d0e8f8;border-radius:6px;padding:10px 12px;font-size:12px;color:#555;margin-bottom:12px;line-height:1.6;">
+        💡 <strong>建坪とは？</strong><br>建物が建っている土地の面積（1階部分の広さ）です。<br>登記簿や固定資産税の通知書に記載されています。
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <input type="number" id="areaTsubo" min="1" max="999" value="30" placeholder="例：30"
+          oninput="updateAreaTsubo(this.value)"
+          style="flex:1;padding:14px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:24px;font-family:'Oswald',sans-serif;font-weight:600;color:var(--orange);text-align:center;background:#fafafa;-webkit-appearance:none;">
+        <span style="font-size:18px;font-weight:700;color:#888;white-space:nowrap;">坪</span>
+      </div>
+      <div id="tsuboConvert" style="text-align:right;font-size:12px;color:#aaa;margin-top:6px;">≈ 99㎡</div>
+    </div>
+
+    <!-- 延床面積モード -->
+    <div id="modeSqm" style="display:none;">
+      <div style="background:#f0f8ff;border:1px solid #d0e8f8;border-radius:6px;padding:10px 12px;font-size:12px;color:#555;margin-bottom:12px;line-height:1.6;">
+        💡 <strong>延床面積とは？</strong><br>全フロアの床面積の合計です。<br>2階建て30㎡×2階＝延床60㎡のイメージです。
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <input type="number" id="areaSqm" min="1" max="9999" value="100" placeholder="例：100"
+          oninput="updateAreaSqm(this.value)"
+          style="flex:1;padding:14px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:24px;font-family:'Oswald',sans-serif;font-weight:600;color:var(--orange);text-align:center;background:#fafafa;-webkit-appearance:none;">
+        <span style="font-size:18px;font-weight:700;color:#888;white-space:nowrap;">㎡</span>
+      </div>
+      <div id="sqmConvert" style="text-align:right;font-size:12px;color:#aaa;margin-top:6px;">≈ 30坪</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>築年数<span class="req">*</span></label>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <input type="number" id="age" min="1" max="99" value="30" placeholder="例：30"
+        oninput="updateAge(this.value)"
+        style="flex:1;padding:14px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:24px;font-family:'Oswald',sans-serif;font-weight:600;color:var(--orange);text-align:center;background:#fafafa;-webkit-appearance:none;">
+      <span style="font-size:18px;font-weight:700;color:#888;white-space:nowrap;">年</span>
+    </div>
+  </div>
+
+  <!-- 概算プレビュー -->
+  <div class="estimate-preview">
+    <div class="est-label">概算見積もり（参考）</div>
+    <div class="est-range" id="estRange">—</div>
+    <div id="tsuboDetail" style="color:#777;font-size:12px;margin-top:6px;"></div>
+    <div class="est-note" style="margin-top:8px;">※正確な金額は現地調査後にご提示します。<br>建物の状態・立地・アスベスト有無により変動します。</div>
+  </div>
+
+  <br>
+  <div style="display:flex;gap:10px;">
+    <button class="btn-line" style="background:#eee;color:#333;flex:1;" onclick="goTo(1)">← 戻る</button>
+    <button class="btn-line" style="flex:2;" onclick="goTo(3)" id="toStep3Btn">
+      次へ →
+    </button>
+  </div>
+</div>
+
+<!-- Step 3: 連絡先 -->
+<div class="card hidden" id="page3">
+  <div class="section-title">
+    <div class="icon">📱</div>
+    LINEで結果をお届けします
+  </div>
+
+  <div class="contact-info">
+    <div class="field">
+      <label>お名前<span class="req">*</span></label>
+      <input type="text" id="name" placeholder="例：山田 太郎">
+    </div>
+    <div class="field">
+      <label>電話番号<span class="req">*</span></label>
+      <input type="tel" id="tel" placeholder="例：090-1234-5678">
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label>ご希望の工事時期</label>
+      <select id="timing">
+        <option value="できるだけ早く">できるだけ早く</option>
+        <option value="1〜3ヶ月以内">1〜3ヶ月以内</option>
+        <option value="3〜6ヶ月以内">3〜6ヶ月以内</option>
+        <option value="半年以上先">半年以上先</option>
+        <option value="まだ未定">まだ未定</option>
+      </select>
+    </div>
+  </div>
+
+  <br>
+
+  <button class="btn-line" onclick="submitForm()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+    LINEで無料見積もりを受け取る
+  </button>
+
+  <p class="privacy-note">送信後、LINEの友だち追加画面に移動します。<br>いただいた情報は見積もり以外に使用しません。</p>
+
+  <div style="display:flex;gap:10px;margin-top:16px;">
+    <button class="btn-line" style="background:#eee;color:#333;" onclick="goTo(2)">← 戻る</button>
+  </div>
+</div>
+
+<!-- Success -->
+<div class="card" id="successCard" style="display:none;">
+  <div class="success" style="display:block;">
+    <div class="check">✓</div>
+    <h2>送信完了！</h2>
+    <p>ご入力ありがとうございます。<br>LINEにて概算金額を<br><strong>最短即日〜翌営業日</strong>にお送りします。</p>
+    <br>
+    <div class="estimate-preview" style="text-align:left;">
+      <div class="est-label">受付内容</div>
+      <div id="confirmText" style="color:#ccc;font-size:13px;line-height:1.9;margin-top:8px;"></div>
+    </div>
+    <br>
+    <div style="border-top:1px solid #333;padding-top:16px;text-align:center;">
+      <div style="font-family:'Oswald',sans-serif;font-size:18px;color:#fff;letter-spacing:0.08em;margin-bottom:8px;">T-CREST</div>
+      <a href="tel:0495718637" style="display:block;color:#aaa;font-size:13px;text-decoration:none;margin-bottom:4px;">☎ 0495-71-8637</a>
+      <a href="tel:09074018484" style="display:block;color:#aaa;font-size:13px;text-decoration:none;">📱 090-7401-8484</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Footer -->
+<div style="background:#0d0d0d;padding:24px 20px;text-align:center;margin-top:8px;">
+  <div style="font-family:'Oswald',sans-serif;font-size:22px;color:#fff;letter-spacing:0.1em;margin-bottom:10px;">T-CREST</div>
+  <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="tel:0495718637" style="display:flex;align-items:center;gap:6px;color:#ccc;font-size:14px;text-decoration:none;font-weight:700;">
+      <span style="color:#f05a00;font-size:16px;">☎</span> 0495-71-8637
+    </a>
+    <a href="tel:09074018484" style="display:flex;align-items:center;gap:6px;color:#ccc;font-size:14px;text-decoration:none;font-weight:700;">
+      <span style="color:#f05a00;font-size:16px;">📱</span> 090-7401-8484
+    </a>
+  </div>
+  <p style="font-size:11px;color:#555;">© T-CREST All Rights Reserved.</p>
+</div>
+
+<script>
+  // State
+  const state = {
+    type: '木造', floors: '2', region: '',
+    area: 100, age: 30,
+    name: '', tel: '', timing: 'できるだけ早く'
+  };
+
+  // ============================================================
+  // ★ 坪単価設定（ここを変更してください）単位：万円/坪
+  // ============================================================
+  const TSUBO_PRICE = {
+    '木造':                  3.5,   // 木造：3.5万円/坪
+    '鉄骨造':                5.0,   // 鉄骨造：5.0万円/坪
+    'RC（鉄筋コンクリート）': 7.0,   // RC造：7.0万円/坪
+    '軽量鉄骨（プレハブ）':  3.0,   // 軽量鉄骨：3.0万円/坪
+  };
+  // 表示する幅（±%）例: 0.15 → ±15%の帯で表示
+  const PRICE_RANGE = 0.15;
+  // 築年数による加算（最大）：築60年でも+5%まで（影響を最小化）
+  const AGE_MAX_ADD = 0.05;
+  // ============================================================
+
+  // 入力モード: 'tsubo'=建坪, 'sqm'=延床面積㎡
+  let areaMode = 'tsubo';
+
+  function switchMode(mode) {
+    areaMode = mode;
+    document.getElementById('modeTsubo').style.display = mode === 'tsubo' ? '' : 'none';
+    document.getElementById('modeSqm').style.display   = mode === 'sqm'   ? '' : 'none';
+    document.getElementById('btnTsubo').style.background = mode === 'tsubo' ? 'var(--black)' : '#f5f5f5';
+    document.getElementById('btnTsubo').style.color      = mode === 'tsubo' ? '#fff' : '#888';
+    document.getElementById('btnTsubo').style.fontWeight = mode === 'tsubo' ? '700' : '500';
+    document.getElementById('btnSqm').style.background   = mode === 'sqm'   ? 'var(--black)' : '#f5f5f5';
+    document.getElementById('btnSqm').style.color        = mode === 'sqm'   ? '#fff' : '#888';
+    document.getElementById('btnSqm').style.fontWeight   = mode === 'sqm'   ? '700' : '500';
+    updateEstimate();
+  }
+
+  function getTsubo() {
+    if (areaMode === 'tsubo') {
+      return parseFloat(document.getElementById('areaTsubo').value) || 0;
+    } else {
+      const sqm = parseFloat(document.getElementById('areaSqm').value) || 0;
+      return Math.round(sqm / 3.306);
+    }
+  }
+
+  function getAreaLabel() {
+    if (areaMode === 'tsubo') {
+      const v = document.getElementById('areaTsubo').value;
+      const sqm = Math.round(parseFloat(v) * 3.306);
+      return v + '坪（建坪・約' + sqm + '㎡）';
+    } else {
+      const v = document.getElementById('areaSqm').value;
+      const tsubo = Math.round(parseFloat(v) / 3.306);
+      return v + '㎡（延床面積・約' + tsubo + '坪換算）';
+    }
+  }
+
+  function calcEstimate() {
+    const type = document.querySelector('input[name="type"]:checked')?.value || '木造';
+    const tsubo = getTsubo();
+    const age   = parseInt(document.getElementById('age').value);
+    const base  = TSUBO_PRICE[type] || 3.5;
+
+    // 築年数の影響を最小化：0〜AGE_MAX_ADD の範囲で線形加算
+    const ageFactor = 1 + (age / 60) * AGE_MAX_ADD;
+
+    const mid  = base * ageFactor * tsubo;
+    const low  = Math.floor(mid * (1 - PRICE_RANGE));
+    const high = Math.ceil(mid  * (1 + PRICE_RANGE));
+    return { low, high, tsubo, base, ageFactor };
+  }
+
+  function updateEstimate() {
+    const { low, high, tsubo, base, ageFactor } = calcEstimate();
+    const unitWithAge = (base * ageFactor).toFixed(1);
+    document.getElementById('estRange').innerHTML =
+      `約 ${low}万円 〜 ${high}万円 <small>（目安）</small>`;
+    document.getElementById('tsuboDetail').innerHTML =
+      `坪単価 ${unitWithAge}万円 × ${tsubo}坪`;
+    // (no sliders)
+  }
+
+  function updateAreaTsubo(v) {
+    const sqm = Math.round(parseFloat(v) * 3.306);
+    document.getElementById('tsuboConvert').textContent = '≈ ' + sqm + '㎡';
+    updateEstimate();
+  }
+
+  function updateAreaSqm(v) {
+    const tsubo = Math.round(parseFloat(v) / 3.306);
+    document.getElementById('sqmConvert').textContent = '≈ ' + tsubo + '坪';
+    updateEstimate();
+  }
+
+  function updateAge(v) {
+    state.age = parseInt(v) || 0;
+    updateEstimate();
+  }
+
+  function goTo(n) {
+    // Validate
+    if (n === 2) {
+      if (!document.getElementById('region').value) {
+        showToast('都道府県を選択してください');
+        return;
+      }
+    }
+    if (n === 3) {
+      // nothing to validate here
+    }
+
+    [1,2,3].forEach(i => {
+      document.getElementById('page'+i).classList.add('hidden');
+      const ind = document.getElementById('step-ind-'+i);
+      ind.classList.remove('active','done');
+      if (i < n) ind.classList.add('done');
+      else if (i === n) ind.classList.add('active');
+    });
+    document.getElementById('page'+n).classList.remove('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+
+    if (n === 2) updateEstimate();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function submitForm() {
+    const name = document.getElementById('name').value.trim();
+    const tel = document.getElementById('tel').value.trim();
+    if (!name) { showToast('お名前を入力してください'); return; }
+    if (!tel) { showToast('電話番号を入力してください'); return; }
+
+    const type = document.querySelector('input[name="type"]:checked')?.value;
+    const floors = document.getElementById('floors').value;
+    const region = document.getElementById('region').value;
+    const area = document.getElementById('area').value;
+    const age = document.getElementById('age').value;
+    const timing = document.getElementById('timing').value;
+    const { low, high } = calcEstimate();
+
+    // Build LINE message
+    const msg = encodeURIComponent(
+      `【解体見積もり依頼】\n` +
+      `お名前：${name}\n` +
+      `電話：${tel}\n` +
+      `地域：${region}\n` +
+      `建物：${type}/${floors}階建て\n` +
+      `面積：${getAreaLabel()}\n` +
+      `築年数：${age}年\n` +
+      `工事時期：${timing}\n` +
+      `概算（目安）：${low}〜${high}万円\n` +
+      `※正確な金額は現地調査後にご提示します`
+    );
+
+    // ★ ここをあなたのLINE公式アカウントのURLに変更してください
+    const LINE_URL = `https://lin.ee/SbK5at1`;
+
+    // Show success
+    document.getElementById('page3').classList.add('hidden');
+    document.getElementById('successCard').style.display = 'block';
+    document.getElementById('stepsBar').style.display = 'none';
+    document.getElementById('confirmText').innerHTML =
+      `建物種別：${type}<br>` +
+      `階数：${floors}階建て<br>` +
+      `地域：${region}<br>` +
+      `面積：${getAreaLabel()} / 築${age}年<br>` +
+      `概算金額：<span style="color:var(--orange);font-weight:700;">${low}〜${high}万円</span><br>` +
+      `<span style="color:#888;font-size:11px;">※正確な金額は現地調査後にご提示します</span><br>` +
+      `ご希望時期：${timing}`;
+
+    // Open LINE
+    setTimeout(() => { window.open(LINE_URL, '_blank'); }, 600);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Init slider bg
+  updateEstimate();
+</script>
+</body>
+</html>
