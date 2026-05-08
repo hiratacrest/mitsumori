@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -803,27 +804,10 @@
     const type = document.querySelector('input[name="type"]:checked')?.value;
     const floors = document.getElementById('floors').value;
     const region = document.getElementById('region').value;
-    const area = document.getElementById('area').value;
-    const age = document.getElementById('age').value;
+    const ageVal = document.getElementById('age').value;
     const timing = document.getElementById('timing').value;
     const { low, high } = calcEstimate();
-
-    // Build LINE message
-    const msg = encodeURIComponent(
-      `【解体見積もり依頼】\n` +
-      `お名前：${name}\n` +
-      `電話：${tel}\n` +
-      `地域：${region}\n` +
-      `建物：${type}/${floors}階建て\n` +
-      `面積：${getAreaLabel()}\n` +
-      `築年数：${age}年\n` +
-      `工事時期：${timing}\n` +
-      `概算（目安）：${low}〜${high}万円\n` +
-      `※正確な金額は現地調査後にご提示します`
-    );
-
-    // ★ ここをあなたのLINE公式アカウントのURLに変更してください
-    const LINE_URL = `https://lin.ee/SbK5at1`;
+    const areaLabel = getAreaLabel();
 
     // Show success
     document.getElementById('page3').classList.add('hidden');
@@ -833,14 +817,16 @@
       `建物種別：${type}<br>` +
       `階数：${floors}階建て<br>` +
       `地域：${region}<br>` +
-      `面積：${getAreaLabel()} / 築${age}年<br>` +
+      `面積：${areaLabel} / 築${ageVal}年<br>` +
       `概算金額：<span style="color:var(--orange);font-weight:700;">${low}〜${high}万円</span><br>` +
       `<span style="color:#888;font-size:11px;">※正確な金額は現地調査後にご提示します</span><br>` +
       `ご希望時期：${timing}`;
-
-    // Open LINE
-    setTimeout(() => { window.open(LINE_URL, '_blank'); }, 600);
     window.scrollTo({top:0,behavior:'smooth'});
+
+    // LINEへ遷移
+    setTimeout(() => {
+      window.location.href = 'https://lin.ee/SbK5at1';
+    }, 800);
   }
 
   // Init slider bg
